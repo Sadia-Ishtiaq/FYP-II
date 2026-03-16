@@ -1,0 +1,10 @@
+Glioma is a type of tumor that starts in the glial cells of the brain or spine.
+Glial cells support and protect neurons in the brain.
+Gliomas are classified by grade: low-grade (slow growing) and high-grade (fast growing, aggressive).
+Glioblastoma (GBM) is the most aggressive form of glioma and is classified as grade 4.
+Symptoms include headaches, nausea, seizures, memory problems, and personality changes.
+Treatment typically involves surgery, radiation therapy, and chemotherapy.
+Temozolomide is a common chemotherapy drug used for glioblastoma.
+The prognosis depends on the grade, location, and the patient's age and health.
+Low-grade gliomas may be managed for years, while high-grade gliomas have a more serious outlook.
+Genetic markers like IDH mutation and MGMT methylation influence treatment response and prognosis.
