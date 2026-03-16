@@ -1,0 +1,23 @@
+Q: What is a brain tumor?
+A: A brain tumor is a mass or growth of abnormal cells in the brain. Some are benign (non-cancerous) and some are malignant (cancerous).
+
+Q: What does a confidence score mean in an AI diagnosis?
+A: The confidence score shows how certain the AI model is about its prediction. A score of 99% means the model is very confident in its diagnosis, but a doctor must always confirm the result.
+
+Q: Is a high confidence score a confirmed diagnosis?
+A: No. The AI confidence score is not a medical diagnosis. It must be reviewed and confirmed by a qualified medical professional.
+
+Q: What should I do after receiving an AI MRI report?
+A: You should consult a specialist such as a neurologist or neurosurgeon as soon as possible to discuss the findings and plan next steps.
+
+Q: Can brain tumors be cured?
+A: Many brain tumors, especially benign ones, can be successfully treated with surgery, radiation, or medication. The outcome depends on the type, size, and location of the tumor.
+
+Q: What is the difference between benign and malignant tumors?
+A: Benign tumors are non-cancerous and usually grow slowly. Malignant tumors are cancerous, grow faster, and can spread to other parts of the brain or body.
+
+Q: What is an MRI scan?
+A: MRI (Magnetic Resonance Imaging) is a medical imaging technique that uses magnetic fields and radio waves to create detailed images of the brain and other organs.
+
+Q: What is a neurosurgeon?
+A: A neurosurgeon is a doctor who specializes in surgery of the brain, spine, and nervous system.

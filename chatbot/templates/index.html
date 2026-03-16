@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DeepNeuro Chatbot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #1a73e8;
+      color: #fff;
+      padding: 18px 24px;
+    }
+
+    .header h1 { font-size: 1.2rem; }
+    .header p  { font-size: 0.85rem; opacity: 0.85; margin-top: 4px; }
+
+    .chat-window {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      min-height: 300px;
+      max-height: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .message.user {
+      background: #1a73e8;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .message.bot {
+      background: #f1f3f4;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .message.error {
+      background: #fdecea;
+      color: #c62828;
+      align-self: flex-start;
+    }
+
+    .form-area {
+      border-top: 1px solid #e0e0e0;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .file-row input[type="file"] { flex: 1; }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-row input[type="text"] {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .input-row input[type="text"]:focus { border-color: #1a73e8; }
+
+    .input-row button {
+      padding: 10px 20px;
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    .input-row button:disabled { background: #aaa; cursor: not-allowed; }
+
+    #status { font-size: 0.8rem; color: #888; min-height: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>DeepNeuro Assistant</h1>
+      <p>Upload your MRI report and ask any questions about your results.</p>
+    </div>
+
+    <div class="chat-window" id="chatWindow">
+      <div class="message bot">Hello! Please upload your MRI report PDF and ask me anything about your results.</div>
+    </div>
+
+    <div class="form-area">
+      <div class="file-row">
+        <label for="reportFile">MRI Report (PDF):</label>
+        <input type="file" id="reportFile" accept=".pdf" />
+      </div>
+      <div class="input-row">
+        <input type="text" id="questionInput" placeholder="Ask a question about your report..." />
+        <button id="sendBtn" onclick="sendMessage()">Send</button>
+      </div>
+      <div id="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById("chatWindow");
+    const questionInput = document.getElementById("questionInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const status = document.getElementById("status");
+
+    questionInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function appendMessage(text, type) {
+      const div = document.createElement("div");
+      div.className = `message ${type}`;
+      div.textContent = text;
+      chatWindow.appendChild(div);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const question = questionInput.value.trim();
+      const file = document.getElementById("reportFile").files[0];
+
+      if (!question) { status.textContent = "Please enter a question."; return; }
+      if (!file)     { status.textContent = "Please upload a PDF report first."; return; }
+
+      appendMessage(question, "user");
+      questionInput.value = "";
+      sendBtn.disabled = true;
+      status.textContent = "Thinking...";
+
+      const formData = new FormData();
+      formData.append("question", question);
+      formData.append("report", file);
+
+      try {
+        const res = await fetch("/chat", { method: "POST", body: formData });
+        const data = await res.json();
+        if (data.answer) {
+          appendMessage(data.answer, "bot");
+        } else {
+          appendMessage(data.error || "Something went wrong.", "error");
+        }
+      } catch (err) {
+        appendMessage("Could not reach the server. Please try again.", "error");
+      } finally {
+        sendBtn.disabled = false;
+        status.textContent = "";
+      }
+    }
+  </script>
+</body>
+</html>
